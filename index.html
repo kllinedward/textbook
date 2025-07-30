@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高一銜接教材下載中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .config-section {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .config-input {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            width: 120px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .admin-status {
+            background: rgba(46, 204, 113, 0.2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .setup-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .setup-title {
+            font-size: 1.2rem;
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .setup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-help {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .upload-section {
+            background: #e8f4fd;
+            border: 2px dashed #4facfe;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 20px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .upload-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .upload-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .upload-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .file-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-btn {
+            background: #28a745;
+        }
+
+        .download-btn {
+            background: #007bff;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .content {
+            padding: 40px 20px;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .unit-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .unit-description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-left: 4px solid #4facfe;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .config-status {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .config-incomplete {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .units-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-section {
+                position: static;
+                justify-content: center;
+                margin-top: 20px;
+                flex-direction: column;
+            }
+
+            .config-input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="config-section">
+                <div id="loginForm">
+                    <input type="password" id="adminPassword" class="config-input" placeholder="管理員密碼">
+                    <button class="btn" id="loginBtn">登入</button>
+                </div>
+                <div id="adminPanel" class="hidden">
+                    <span class="admin-status">👑 管理員模式</span>
+                    <button class="btn" id="configBtn">⚙️ 設定</button>
+                    <button class="btn" id="logoutBtn">登出</button>
+                </div>
+            </div>
+            
+            <h1>高一銜接教材下載中心</h1>
+            <p>國中升高中數學銜接教材・助您順利適應高中數學</p>
+        </div>
+
+        <!-- 管理員專用：GitHub設定區 -->
+        <div id="setupSection" class="setup-section hidden">
+            <h3 class="setup-title">⚙️ GitHub儲存庫設定 (管理員專用)</h3>
+            <p style="color: #666; margin-bottom: 20px;">
+                設定GitHub儲存庫以啟用檔案上傳功能，此設定僅管理員可見
+            </p>
+            
+            <div class="setup-form">
+                <div class="form-group">
+                    <label class="form-label">GitHub用戶名 *</label>
+                    <input type="text" id="githubOwner" class="form-input" placeholder="例如：johnsmith">
+                    <div class="form-help">您的GitHub用戶名</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">儲存庫名稱 *</label>
+                    <input type="text" id="githubRepo" class="form-input" placeholder="例如：math-materials">
+                    <div class="form-help">用於儲存檔案的GitHub repository名稱</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">GitHub Personal Access Token *</label>
+                    <input type="password" id="githubToken" class="form-input" placeholder="ghp_xxxxxxxxxx">
+                    <div class="form-help">
+                        需要repo權限的token。
+                        <a href="https://github.com/settings/tokens" target="_blank" style="color: #007bff;">點此創建token</a>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="upload-btn" id="saveConfigBtn">💾 儲存設定</button>
+                    <button class="upload-btn" id="testConnectionBtn" style="background: #28a745;">🔗 測試連接</button>
+                    <button class="upload-btn" id="hideConfigBtn" style="background: #6c757d;">❌ 關閉</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系統狀態提示 -->
+        <div id="configStatus" class="hidden"></div>
+
+        <div class="info-section">
+            <h3>📚 使用說明</h3>
+            <p>
+                <strong>學生用戶：</strong>可以瀏覽和下載所有教材檔案。<br>
+                <strong>管理員：</strong>登入後可以設定GitHub儲存庫並上傳教材檔案。<br>
+                <strong>檔案格式：</strong>支援PDF格式的教材檔案，檔案將儲存在GitHub上供所有人下載。
+            </p>
+        </div>
+
+        <div id="uploadSection" class="upload-section hidden">
+            <h3 class="upload-title">📚 管理員上傳教材檔案</h3>
+            <p class="upload-description">選擇PDF檔案上傳到GitHub儲存庫，所有用戶都可以下載</p>
+            <input type="file" id="fileInput" class="file-input" accept=".pdf" multiple>
+            <button class="upload-btn" id="selectFileBtn">📄 選擇PDF檔案</button>
+            <div id="uploadProgress" class="hidden">
+                <div class="loading">📤 正在上傳檔案到GitHub...</div>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <h3 class="upload-title">📖 教材檔案下載區</h3>
+            <p class="upload-description">以下是可供下載的教材檔案</p>
+            <div id="fileList" class="file-list"></div>
+            <div id="noFiles" style="text-align: center; color: #666; padding: 20px;">
+                📝 正在載入檔案列表...<br>
+                <small>如果持續載入失敗，請聯繫管理員設定GitHub儲存庫</small>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="units-grid">
+                <div class="unit-card">
+                    <h3 class="unit-title">單元1：實數</h3>
+                    <p class="unit-description">
+                        涵蓋有理數、無理數、實數的定義與性質，包含有理數化為小數、循環小數化為分數、
+                        算幾不等式的應用等重要概念。幫助學生建立完整的數系概念。
+                    </p>
+                </div>
+
+                <div class="unit-card">
+                    <h3 class="unit-title">單元2：式的運算</h3>
+                    <p class="unit-description">
+                        包含乘法公式的應用、分式運算、根式的化簡與運算。
+                        學習平方差公式、立方差公式、雙重根式化簡等重要技巧。
+                    </p>
+                </div>
+
+                <div class="unit-card">
+                    <h3 class="unit-title">單元3：絕對值</h3>
+                    <p class="unit-description">
+                        數線上的幾何概念、絕對值的性質與應用、含絕對值的方程式與不等式。
+                        掌握分點公式、絕對值的幾何意義和代數解法。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 高一銜接教材下載中心・專為國中升高中學生設計</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var state = {
+                isAdmin: false,
+                files: [],
+                config: {
+                    owner: '',
+                    repo: '',
+                    token: ''
+                }
+            };
+
+            // 載入設定（只有管理員登入後才載入）
+            function loadConfig() {
+                if (!state.isAdmin) return;
+                
+                try {
+                    var savedConfig = localStorage.getItem('githubConfig');
+                    if (savedConfig) {
+                        state.config = JSON.parse(savedConfig);
+                        document.getElementById('githubOwner').value = state.config.owner;
+                        document.getElementById('githubRepo').value = state.config.repo;
+                        document.getElementById('githubToken').value = state.config.token;
+                    }
+                    updateConfigStatus();
+                } catch (e) {
+                    console.error('載入設定失敗:', e);
+                }
+            }
+
+            // 更新配置狀態顯示
+            function updateConfigStatus() {
+                var statusDiv = document.getElementById('configStatus');
+                var isConfigComplete = state.config.owner && state.config.repo && state.config.token;
+                
+                if (state.isAdmin) {
+                    showElement('configStatus');
+                    if (isConfigComplete) {
+                        statusDiv.className = 'config-status';
+                        statusDiv.innerHTML = '✅ GitHub儲存庫已設定完成，可以開始上傳檔案';
+                    } else {
+                        statusDiv.className = 'config-incomplete';
+                        statusDiv.innerHTML = '⚠️ 請先點擊「設定」按鈕設定GitHub儲存庫，才能上傳檔案';
+                    }
+                } else {
+                    hideElement('configStatus');
+                }
+                
+                return isConfigComplete;
+            }
+
+            // 儲存設定
+            function saveConfig() {
+                state.config.owner = document.getElementById('githubOwner').value.trim();
+                state.config.repo = document.getElementById('githubRepo').value.trim();
+                state.config.token = document.getElementById('githubToken').value.trim();
+
+                if (!state.config.owner || !state.config.repo || !state.config.token) {
+                    showMessage('請填寫所有必要欄位', 'error');
+                    return;
+                }
+
+                try {
+                    localStorage.setItem('githubConfig', JSON.stringify(state.config));
+                    showMessage('設定已儲存', 'success');
+                    updateConfigStatus();
+                    loadFileList();
+                } catch (e) {
+                    showMessage('設定儲存失敗', 'error');
+                }
+            }
+
+            // 測試GitHub連接
+            async function testConnection() {
+                var owner = document.getElementById('githubOwner').value.trim();
+                var repo = document.getElementById('githubRepo').value.trim();
+                var token = document.getElementById('githubToken').value.trim();
+
+                if (!owner || !repo || !token) {
+                    showMessage('請先填寫所有欄位', 'error');
+                    return;
+                }
+
+                try {
+                    var response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        showMessage('✅ GitHub連接測試成功！', 'success');
+                    } else if (response.status === 404) {
+                        showMessage('❌ 儲存庫不存在或無訪問權限', 'error');
+                    } else {
+                        showMessage('❌ 連接失敗，請檢查設定', 'error');
+                    }
+                } catch (e) {
+                    showMessage('❌ 網路連接錯誤', 'error');
+                }
+            }
+
+            // 載入檔案列表
+            async function loadFileList() {
+                // 即使不是管理員也嘗試載入檔案列表
+                var configToUse = state.isAdmin ? state.config : (() => {
+                    try {
+                        var saved = localStorage.getItem('githubConfig');
+                        return saved ? JSON.parse(saved) : { owner: '', repo: '', token: '' };
+                    } catch (e) {
+                        return { owner: '', repo: '', token: '' };
+                    }
+                })();
+
+                if (!configToUse.owner || !configToUse.repo || !configToUse.token) {
+                    return;
+                }
+
+                try {
+                    var response = await fetch(`https://api.github.com/repos/${configToUse.owner}/${configToUse.repo}/contents/files`, {
+                        headers: {
+                            'Authorization': `token ${configToUse.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        var files = await response.json();
+                        state.files = files.filter(file => file.name.toLowerCase().endsWith('.pdf'));
+                        updateFileList();
+                    } else if (response.status === 404) {
+                        // files資料夾不存在，如果是管理員就創建它
+                        if (state.isAdmin) {
+                            await createFilesFolder();
+                        }
+                        state.files = [];
+                        updateFileList();
+                    } else {
+                        showMessage('載入檔案列表失敗', 'error');
+                    }
+                } catch (e) {
+                    console.error('載入檔案列表時發生錯誤:', e);
+                }
+            }
+
+            // 創建files資料夾
+            async function createFilesFolder() {
+                try {
+                    await fetch(`https://api.github.com/repos/${state.config.owner}/${state.config.repo}/contents/files/README.md`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${state.config.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: 'Create files folder',
+                            content: btoa('# 教材檔案存放區\n\n此資料夾用於存放PDF教材檔案。')
+                        })
+                    });
+                } catch (e) {
+                    console.error('創建files資料夾失敗:', e);
+                }
+            }
+
+            // 上傳檔案到GitHub
+            async function uploadFileToGitHub(file) {
+                return new Promise((resolve, reject) => {
+                    var reader = new FileReader();
+                    reader.onload = async function() {
+                        try {
+                            var base64Content = btoa(reader.result);
+                            var fileName = file.name;
+                            
+                            var response = await fetch(`https://api.github.com/repos/${state.config.owner}/${state.config.repo}/contents/files/${fileName}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Authorization': `token ${state.config.token}`,
+                                    'Accept': 'application/vnd.github.v3+json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    message: `Upload ${fileName}`,
+                                    content: base64Content
+                                })
+                            });
+
+                            if (response.ok) {
+                                resolve(await response.json());
+                            } else {
+                                reject(new Error(`上傳失敗: ${response.status}`));
+                            }
+                        } catch (e) {
+                            reject(e);
+                        }
+                    };
+                    reader.readAsBinaryString(file);
+                });
+            }
+
+            // 刪除GitHub檔案
+            async function deleteFileFromGitHub(fileName, sha) {
+                try {
+                    var response = await fetch(`https://api.github.com/repos/${state.config.owner}/${state.config.repo}/contents/files/${fileName}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `token ${state.config.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Delete ${fileName}`,
+                            sha: sha
+                        })
+                    });
+
+                    return response.ok;
+                } catch (e) {
+                    console.error('刪除檔案失敗:', e);
+                    return false;
+                }
+            }
+
+            function showElement(id) {
+                document.getElementById(id).classList.remove('hidden');
+            }
+
+            function hideElement(id) {
+                document.getElementById(id).classList.add('hidden');
+            }
+
+            function showMessage(message, type) {
+                var messageDiv = document.createElement('div');
+                messageDiv.className = type;
+                messageDiv.textContent = message;
+                
+                var setupSection = document.getElementById('setupSection');
+                setupSection.appendChild(messageDiv);
+                
+                setTimeout(() => {
+                    if (messageDiv.parentNode) {
+                        messageDiv.parentNode.removeChild(messageDiv);
+                    }
+                }, 5000);
+            }
+
+            function login() {
+                var password = document.getElementById('adminPassword').value;
+                if (password === 'admin123') {
+                    state.isAdmin = true;
+                    hideElement('loginForm');
+                    showElement('adminPanel');
+                    showElement('uploadSection');
+                    
+                    // 載入管理員設定
+                    loadConfig();
+                    updateConfigStatus();
+                    updateFileList();
+                    
+                    document.getElementById('adminPassword').value = '';
+                    alert('✅ 管理員登入成功！');
+                } else {
+                    alert('❌ 密碼錯誤！');
+                    document.getElementById('adminPassword').value = '';
+                }
+            }
+
+            function logout() {
+                state.isAdmin = false;
+                showElement('loginForm');
+                hideElement('adminPanel');
+                hideElement('uploadSection');
+                hideElement('setupSection');
+                hideElement('configStatus');
+                updateFileList();
+                alert('👋 已登出管理員模式');
+            }
+
+            function showConfigPanel() {
+                if (!state.isAdmin) {
+                    alert('❌ 權限不足！只有管理員可以設定');
+                    return;
+                }
+                showElement('setupSection');
+            }
+
+            function hideConfigPanel() {
+                hideElement('setupSection');
+            }
+
+            function selectFile() {
+                if (!updateConfigStatus()) {
+                    alert('❌ 請先設定GitHub儲存庫');
+                    showConfigPanel();
+                    return;
+                }
+                document.getElementById('fileInput').click();
+            }
+
+            async function handleFileUpload(event) {
+                if (!state.isAdmin) {
+                    alert('❌ 權限不足！請先登入管理員帳號');
+                    return;
+                }
+
+                if (!updateConfigStatus()) {
+                    alert('❌ 請先設定GitHub儲存庫');
+                    showConfigPanel();
+                    return;
+                }
+
+                var files = event.target.files;
+                if (files.length === 0) return;
+
+                showElement('uploadProgress');
+                document.getElementById('selectFileBtn').disabled = true;
+
+                try {
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        if (file.type === 'application/pdf') {
+                            await uploadFileToGitHub(file);
+                        }
+                    }
+                    
+                    await loadFileList();
+                    alert('✅ 檔案上傳成功！');
+                } catch (e) {
+                    alert('❌ 檔案上傳失敗：' + e.message);
+                } finally {
+                    hideElement('uploadProgress');
+                    document.getElementById('selectFileBtn').disabled = false;
+                    event.target.value = '';
+                }
+            }
+
+            function updateFileList() {
+                var fileList = document.getElementById('fileList');
+                var noFiles = document.getElementById('noFiles');
+                
+                if (state.files.length === 0) {
+                    fileList.innerHTML = '';
+                    noFiles.style.display = 'block';
+                    noFiles.innerHTML = '📝 目前沒有可用的教材檔案<br><small>管理員可登入後上傳教材檔案</small>';
+                    return;
+                }
+
+                noFiles.style.display = 'none';
+                var html = '';
+                
+                for (var i = 0; i < state.files.length; i++) {
+                    var file = state.files[i];
+                    var deleteBtn = state.isAdmin ? '' : 'hidden';
+                    var fileSize = file.size ? (file.size / 1024 / 1024).toFixed(2) + ' MB' : '未知大小';
+                    
+                    html += '<div class="file-item">';
+                    html += '<div class="file-name">📄 ' + file.name + '</div>';
+                    html += '<div style="color: #666; font-size: 0.9rem; margin-bottom: 10px;">檔案大小: ' + fileSize + ' | 來源: GitHub</div>';
+                    html += '<div class="file-actions">';
+                    html += '<a class="action-btn view-btn" href="' + file.download_url + '" target="_blank">👁️ 檢視PDF</a>';
+                    html += '<a class="action-btn download-btn" href="' + file.download_url + '" download="' + file.name + '">⬇️ 下載檔案</a>';
+                    html += '<button class="action-btn delete-btn ' + deleteBtn + '" onclick="deleteFile(' + i + ')">🗑️ 刪除</button>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                fileList.innerHTML = html;
+            }
+
+            window.deleteFile = async function(index) {
+                if (!state.isAdmin) {
+                    alert('❌ 權限不足！只有管理員可以刪除檔案');
+                    return;
+                }
+                
+                var file = state.files[index];
+                if (confirm('確定要刪除「' + file.name + '」嗎？\n刪除後所有用戶都無法再下載此檔案。')) {
+                    try {
+                        var success = await deleteFileFromGitHub(file.name, file.sha);
+                        if (success) {
+                            await loadFileList();
+                            alert('✅ 檔案已刪除');
+                        } else {
+                            alert('❌ 檔案刪除失敗');
+                        }
+                    } catch (e) {
+                        alert('❌ 檔案刪除失敗：' + e.message);
+                    }
+                }
+            };
+
+            // 事件綁定
+            document.getElementById('loginBtn').addEventListener('click', login);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('configBtn').addEventListener('click', showConfigPanel);
+            document.getElementById('selectFileBtn').addEventListener('click', selectFile);
+            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+            document.getElementById('saveConfigBtn').addEventListener('click', saveConfig);
+            document.getElementById('testConnectionBtn').addEventListener('click', testConnection);
+            document.getElementById('hideConfigBtn').addEventListener('click', hideConfigPanel);
+            
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+
+            // 初始化 - 載入檔案列表（不載入敏感設定）
+            loadFileList();
+            document.getElementById('adminPassword').focus();
+        });
+    </script>
+</body>
+</html>
